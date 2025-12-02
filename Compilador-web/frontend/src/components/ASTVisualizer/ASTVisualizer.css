@@ -1,0 +1,168 @@
+.ast-visualizer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- NUEVO: Encabezado con botón de descarga --- */
+.ast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.ast-header h3 {
+  margin: 0; /* Resetea margen */
+  color: var(--color-primary); 
+}
+
+/* Estilo para el botón de descarga */
+.download-button {
+    background-color: var(--color-primary-variant);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.download-button:hover {
+    background-color: var(--color-primary);
+}
+
+/* --- RESTO DEL CSS (Ya lo tenías) --- */
+
+.placeholder {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-text-secondary); 
+  font-style: italic;
+}
+
+/* --- ESTILOS PARA EL ÁRBOL D3 --- */
+.tree-container {
+  flex: 1; 
+  border: 1px solid var(--color-border); 
+  border-radius: 6px;
+  background: #FFFFFF; 
+  overflow: auto; 
+  margin-bottom: 20px;
+  min-height: 420px; /* provide more vertical space for the diagram */
+  max-height: 60vh; /* cap to viewport fraction so JSON stays visible */
+}
+
+.tree-container svg {
+  background-color: #FFFFFF; 
+}
+
+/* Estilo de los nodos (círculos) */
+.node-circle {
+  transition: all 0.2s ease-in-out;
+  stroke: #AAAAAA; 
+  stroke-width: 2px;
+}
+
+/* Colores de nodos */
+.node-circle.program { fill: var(--color-primary-variant); }
+.node-circle.function { fill: #2196F3; }
+.node-circle.block { fill: #FF9800; }
+.node-circle.vardecl { fill: #E91E63; }
+.node-circle.literal { fill: #00BCD4; }
+.node-circle.string { fill: #4CAF50; }
+.node-circle.operator { fill: #9C27B0; }
+.node-circle.if { fill: #FFEB3B; }
+.node-circle.print { fill: #03DAC6; }
+.node-circle.return { fill: #8BC34A; }
+
+.node-circle:hover {
+  stroke: var(--color-primary); 
+  stroke-width: 3px;
+  cursor: pointer;
+}
+
+/* Texto de nodo */
+.node-text-name {
+  fill: #111111 !important; 
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.node-text-value {
+  fill: #111111 !important; 
+  font-size: 14px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Líneas */
+.tree-container .rd3t-link { 
+  stroke: #555555 !important;  
+  stroke-width: 1.5px;
+  opacity: 1;       
+}
+
+/* --- ESTILOS VISOR JSON --- */
+.ast-json-viewer {
+  margin-top: 20px;
+  background: var(--color-bg-medium); 
+  border: 1px solid var(--color-border); 
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.json-toggle-button {
+  width: 100%;
+  text-align: left;
+  padding: 15px 20px;
+  background: var(--color-bg-light); 
+  color: var(--color-text-primary);
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.json-toggle-button:hover {
+  background: var(--color-bg-medium);
+  color: var(--color-primary); 
+}
+
+.json-toggle-button.active {
+  background: var(--color-bg-medium);
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.toggle-icon {
+  font-size: 0.8em;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.json-toggle-button.active .toggle-icon {
+  transform: rotate(0deg); 
+}
+
+.json-content {
+  background: var(--color-bg-dark); 
+  color: var(--color-text-secondary); 
+  padding: 15px 20px;
+  margin: 0;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  max-height: 36vh; /* allow the JSON viewer a viewport-relative height */
+  overflow-y: auto;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Ensure the AST visualizer's container allocates space properly */
+.ast-visualizer { display: flex; flex-direction: column; gap: 12px; }

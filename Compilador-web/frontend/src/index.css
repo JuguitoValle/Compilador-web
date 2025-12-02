@@ -1,0 +1,48 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* --- ELIMINADO --- 
+   * color-scheme, color, y background-color
+   * los manejará App.css y el body
+   */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: var(--color-primary); /* Usar variable morada */
+  text-decoration: inherit;
+}
+a:hover {
+  color: var(--color-primary-variant); /* Usar variable morada */
+}
+
+body {
+  margin: 0;
+  /* display y place-items eliminados para que App.css controle el layout */
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* --- ELIMINADO --- 
+ * Estilos de 'button' genéricos.
+ * Los manejaremos en App.css (pestañas) y 
+ * CompilationControls.css (botones)
+ * para mayor especificidad.
+ */
+
+/* --- ELIMINADO ---
+ * @media (prefers-color-scheme: light)
+ * Forzaremos el tema oscuro.
+ */

@@ -1,0 +1,117 @@
+.optimization-viewer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.optimization-viewer h3 {
+  margin: 0;
+  color: var(--color-primary);
+}
+
+/* Estadísticas */
+.optimization-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.stat-card {
+  background: var(--color-bg-light);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border-left: 4px solid #555;
+}
+
+.stat-card.optimized { border-left-color: var(--color-primary); }
+.stat-card.reduction.positive { border-left-color: #00C853; } /* Verde */
+.stat-card.reduction.neutral { border-left-color: #FFAB00; } /* Ámbar */
+
+.stat-value { font-size: 1.5rem; font-weight: bold; display: block; color: #fff; }
+.stat-label { font-size: 0.85rem; color: #aaa; }
+
+/* NUEVO: Bitácora */
+.optimization-log-section {
+  flex: 0 0 auto; /* No estirar */
+}
+
+.optimization-log-section h4 {
+  margin: 0 0 10px 0;
+  color: #aaa;
+  font-size: 1rem;
+}
+
+.optimization-log-container {
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 10px;
+  max-height: 150px; /* Altura fija con scroll */
+  overflow-y: auto;
+}
+
+.log-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.log-entry {
+  padding: 4px 0;
+  border-bottom: 1px solid #333;
+  font-family: 'Consolas', monospace;
+  font-size: 0.9rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.log-entry:last-child { border-bottom: none; }
+.log-icon { font-size: 0.8rem; }
+.no-optimizations { color: #666; font-style: italic; text-align: center; margin: 0; }
+
+/* Comparación */
+.comparison-view {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-height: 0; /* Permite scroll interno */
+}
+
+.code-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-column h4 { margin: 0 0 10px 0; color: #aaa; text-align: center; }
+
+.code-container {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+  font-family: 'Consolas', monospace;
+  font-size: 0.9rem;
+}
+
+.code-container.optimized-bg {
+  background: #0d1a15; /* Tinte verde muy sutil */
+  border-color: #1a4d3a;
+}
+
+.quadruple-line {
+  display: flex;
+  gap: 10px;
+  padding: 2px 5px;
+}
+
+.quad-index { color: #666; min-width: 35px; }
+.quad-operator { color: var(--color-primary); font-weight: bold; min-width: 60px; }
+.quad-arg { color: #ccc; flex: 1; }
+.quad-result { color: #FFD700; flex: 1; text-align: right; }

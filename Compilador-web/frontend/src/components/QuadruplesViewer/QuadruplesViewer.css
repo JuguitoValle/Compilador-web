@@ -1,0 +1,220 @@
+.quadruples-visualizer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.quadruples-visualizer h3 {
+    margin-top: 0;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* --- Resumen (Total, Temporales...) --- */
+.quadruples-summary {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.summary-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+/* --- Contenedor de la Tabla --- */
+.quadruples-container {
+    flex: 1; 
+    min-height: 0; 
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg-dark); 
+    overflow-y: auto; 
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* Scrollbar personalizado */
+.quadruples-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.quadruples-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.quadruples-container::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 4px;
+}
+.quadruples-container::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-secondary);
+}
+
+/* --- Tabla --- */
+.quadruples-table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0;
+    font-size: 13px;
+    table-layout: fixed; 
+}
+
+/* Encabezados */
+.quadruples-table th {
+    background: var(--color-bg-medium);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 2px solid var(--color-border);
+    padding: 12px 10px; 
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Celdas Generales */
+.quadruples-table td {
+    padding: 10px 10px; 
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    vertical-align: middle; /* Alineación vertical al centro */
+    height: 40px; 
+}
+
+/* Efecto Zebra */
+.quadruples-table tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+.quadruples-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* --- Anchos de Columna --- */
+.col-index { width: 6%; text-align: center; color: var(--color-text-secondary); opacity: 0.7; }
+.col-op    { width: 14%; } 
+.col-arg1  { width: 20%; }
+.col-arg2  { width: 20%; }
+.col-res   { width: 22%; }
+.col-type  { width: 18%; text-align: center; }
+
+/* Tipografía de código */
+.quad-arg, .quad-result, .operator-text {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+/* --- Estilos del Operador --- */
+.quad-operator {
+    text-align: left; 
+    font-weight: bold;
+    color: var(--color-primary); 
+}
+
+.operator-text {
+    font-size: 13px; 
+    opacity: 1; 
+}
+
+/* --- Estilos de Resultados (Tags) --- */
+.result-value {
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1.2;
+}
+
+.quad-result .temporal {
+    background: rgba(255, 152, 0, 0.1);
+    color: #ffb74d; 
+    border: 1px solid rgba(255, 152, 0, 0.2);
+}
+
+.quad-result .label {
+    background: rgba(3, 218, 198, 0.1);
+    color: #80cbc4; 
+}
+
+.quad-result .label-def {
+    background: rgba(187, 134, 252, 0.1);
+    color: #ce93d8; 
+    font-weight: bold;
+    border: 1px dashed rgba(187, 134, 252, 0.3);
+}
+
+.quad-result .result-value:not(.temporal):not(.label):not(.label-def) {
+    color: #e6e6e6; 
+}
+
+/* --- Badges de Tipo --- */
+.type-badge {
+    padding: 3px 8px;
+    border-radius: 12px; 
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase; /* Convertirá 'Aritmética' a 'ARITMÉTICA' visualmente */
+    display: inline-block;
+    min-width: 70px;
+}
+
+/* Colores según el tipo (en inglés porque viene de la clase) */
+.type-badge.arithmetic { background: rgba(76, 175, 80, 0.2); color: #81c784; border: 1px solid rgba(76, 175, 80, 0.3); }
+.type-badge.assignment { background: rgba(33, 150, 243, 0.2); color: #64b5f6; border: 1px solid rgba(33, 150, 243, 0.3); }
+.type-badge.comparison { background: rgba(255, 152, 0, 0.2); color: #ffb74d; border: 1px solid rgba(255, 152, 0, 0.3); }
+.type-badge.jump       { background: rgba(233, 30, 99, 0.2); color: #f06292; border: 1px solid rgba(233, 30, 99, 0.3); }
+.type-badge.label      { background: rgba(156, 39, 176, 0.2); color: #ba68c8; border: 1px solid rgba(156, 39, 176, 0.3); }
+.type-badge.return     { background: rgba(96, 125, 139, 0.2); color: #90a4ae; }
+.type-badge.write      { background: rgba(0, 188, 212, 0.2); color: #4dd0e1; }
+
+/* --- Leyenda --- */
+.quadruples-legend {
+    margin-top: 15px;
+    padding: 12px;
+    background: var(--color-bg-medium);
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+}
+
+.quadruples-legend h4 {
+    margin: 0 0 10px 0;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+}
+
+.legend-items {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    border: 1px solid transparent; 
+}
+
+/* Placeholder */
+.placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    border: 1px dashed var(--color-border);
+}

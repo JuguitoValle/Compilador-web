@@ -1,0 +1,257 @@
+/* src/styles/App.css */
+/* Modernización: glassmorphism + fondo oscuro con overlay */
+
+:root {
+    /* Paleta base */
+    --color-primary: #BB86FC;
+    --color-accent: #7C4DFF;
+    --color-bg-dark: #0b0b0d;
+    --color-bg-deep: rgba(6,6,6,0.6);
+    --color-text-primary: #F5F7FA;
+    --color-text-secondary: #AAB2C1;
+    --glass-opaque: 0.06; /* card glass */
+    --glass-opaque-2: 0.10; /* stronger */
+    --panel-radius: 14px;
+    --shadow-1: 0 6px 24px rgba(2,6,23,0.6);
+    --shadow-2: 0 10px 40px rgba(2,6,23,0.7);
+    --glass-border: rgba(255,255,255,0.06);
+    --glass-highlight: rgba(255,255,255,0.03);
+    --transition-fast: 180ms cubic-bezier(.2,.9,.3,1);
+    --max-width: 1200px;
+}
+
+/* Global reset / typography */
+* { box-sizing: border-box; }
+html,body,#root { height: 100%; }
+/* Make the background live on the html element and remain fixed during scroll
+     (some browsers don't respect fixed on body when transforms/backdrop-filters are used). */
+html {
+    background-image: url('../images/wall.jpg'); /* asumida: frontend/src/images/wall.jpg */
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    color: var(--color-text-primary);
+    /* Make body transparent so the html background-image shows through */
+    background-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
+
+/* Oscurecer el fondo con un overlay para legibilidad */
+/* Overlay above the image but beneath the app content. Keep it subtle to avoid
+   creating a heavy 'box' feeling when panels render. */
+/* Remove heavy overlay so the background image shows cleanly. */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Also ensure the root element doesn't introduce a background color */
+#root { background: transparent; }
+
+/* App root should sit above overlay */
+.app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Reusable glass card */
+.glass-card {
+    background: linear-gradient(180deg, rgba(255,255,255,var(--glass-opaque)), rgba(255,255,255,var(--glass-opaque-2)));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--panel-radius);
+    box-shadow: var(--shadow-1);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    overflow: hidden;
+}
+
+/* --- HEADER (minimal & elegant) --- */
+.app-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    /* increase top padding so the title can sit visually in the middle area */
+    padding: 34px 28px 12px;
+    margin: 18px auto 0;
+    width: min(100%, var(--max-width));
+    border-radius: 0;
+    transition: transform var(--transition-fast);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    position: relative; /* for absolutely positioned title */
+}
+
+.header-left { display:flex; align-items:center; gap:16px; width:100%; }
+.brand-logo {
+    width:46px; height:46px; border-radius:10px;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700;
+    box-shadow: 0 6px 18px rgba(124,77,255,0.18);
+}
+.header-title-group h1 { font-size:1.6rem; margin:0; letter-spacing: -0.02em; }
+.header-title-group p { margin:0; color:var(--color-text-secondary); font-size:0.9rem; }
+
+/* Center the title in the header area (horizontally) */
+.header-title-group {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 28px; /* tune vertical placement inside header */
+    text-align: center;
+    pointer-events: none; /* keep clicks for buttons unobstructed */
+}
+
+/* Make sure header text is readable but doesn't block interactions */
+.header-title-group * { pointer-events: auto; }
+
+/* Ensure title sits to the left and action buttons align right */
+.header-left .header-title-group { display:flex; flex-direction:column; gap:4px; }
+.btn-reset { margin-left: auto; z-index: 2; }
+
+/* subtle entrance to avoid an abrupt 'gray box' on load */
+.app-header { animation: fadeInDown 260ms var(--transition-fast) both; }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Buttons */
+.btn-reset, .btn-exit-floating {
+    border: none; cursor: pointer; padding: 8px 14px; border-radius: 10px; font-weight:600;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+.btn-reset {
+    background: rgba(255,255,255,0.04);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(255,255,255,0.04);
+}
+.btn-reset:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.45); }
+
+.btn-exit-floating {
+    background: linear-gradient(90deg,#ffb74d,#ff9800);
+    color: #0b0b0d; box-shadow: 0 8px 30px rgba(255,152,0,0.14);
+}
+.btn-exit-floating:hover { transform: translateY(-2px) scale(1.02); }
+
+/* --- LAYOUTS --- */
+.app-layout {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 20px;
+    padding: 28px;
+    width: min(100%, var(--max-width));
+    /* lift the layout up so controls align with centered title visually */
+    margin: 0 auto;
+    margin-top: 8px;
+    transform: translateY(-24px);
+    height: calc(100vh - 160px);
+}
+
+.left-panel {
+    display:flex; flex-direction:column; gap:18px; align-self: start;
+    padding: 18px; min-height: 400px;
+}
+
+.right-panel {
+    display:flex; flex-direction:column; gap:14px; padding: 20px; min-height: 400px;
+}
+
+/* Aplicar glass-card a paneles */
+.left-panel, .right-panel { border-radius: var(--panel-radius); }
+.left-panel { background: transparent; border: none; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: none; }
+.right-panel { background: transparent; border: none; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); box-shadow: none; }
+
+/* Allow panels to scroll internally so the page scroll doesn't reveal large
+    solid rectangles — keeps the background visible and static. */
+.left-panel, .right-panel { overflow: auto; }
+
+/* Card-like children inside panels */
+.panel-section { padding: 14px; border-radius: 10px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.02); }
+
+/* Tabs (Tokens, AST, ...) - distributed, accessible and modern */
+.tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 6px;
+    border-radius: 10px;
+    background: transparent;
+}
+.tabs button {
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.tabs button:hover { color: var(--color-text-primary); transform: translateY(-2px); }
+.tabs button.active {
+    color: var(--color-accent);
+    box-shadow: inset 0 -2px 0 var(--color-accent);
+}
+
+/* Make tabs stretch nicely across the header of the panel on larger screens */
+.tabs { justify-content: flex-start; }
+@media (min-width: 1100px) {
+    .tabs { justify-content: space-between; }
+}
+
+.tab-content { padding: 12px; }
+
+/* Ensure tab content can grow and allow components (like AST) to control their height */
+.tabs + .tab-content, .tab-content { display: flex; flex-direction: column; gap: 12px; }
+
+/* Panels entrance to reduce visible 'block' on load */
+.left-panel, .right-panel { opacity: 0; transform: translateY(6px); animation: panelFadeIn 360ms 120ms ease forwards; }
+@keyframes panelFadeIn { to { opacity: 1; transform: translateY(0); } }
+
+/* --- MODO FLOTANTE (Limpio) --- */
+.app.mode-floating .app-layout { grid-template-columns: 1fr; padding: 18px; height: calc(100vh - 120px); }
+.app.mode-floating .right-panel { grid-column: 1 / -1; height: 100%; }
+
+.app.mode-floating .left-panel {
+        position: fixed; bottom: 28px; left: 28px; width: 420px; height: auto; z-index: 1002; padding: 16px; gap: 10px;
+        animation: popIn 260ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 12px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 30px 80px rgba(2,6,23,0.7);
+}
+
+@keyframes popIn { from { transform: translateY(6px) scale(0.96); opacity: 0 } to { transform: translateY(0) scale(1); opacity: 1 } }
+
+/* Ajustes específicos del Editor en modo flotante */
+.app.mode-floating .code-editor { box-shadow: 0 24px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.04); }
+.app.mode-floating .left-panel > *:not(.code-editor) { display: none; }
+
+/* Utilities */
+.muted { color: var(--color-text-secondary); }
+.small { font-size: 0.85rem; }
+
+/* Responsive */
+@media (max-width: 920px) {
+    .app-layout { grid-template-columns: 1fr; height: auto; padding: 18px; transform: none; }
+    .left-panel { position: relative; width: 100%; }
+    .app-header { margin: 12px; padding: 20px 14px; }
+    .header-title-group { position: static; transform: none; text-align: left; margin-left: 8px; pointer-events: auto; }
+}
+
+/* Small tweaks for accessibility */
+.btn-reset:focus, .btn-exit-floating:focus { outline: 3px solid rgba(124,77,255,0.18); outline-offset: 2px; }
+
+/* End of modern styles */

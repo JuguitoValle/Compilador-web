@@ -1,0 +1,180 @@
+.code-editor {
+  /* Panel oscuro */
+  background: var(--color-bg-medium);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-editor h3 {
+  padding: 20px 20px 0;
+  margin-bottom: 15px;
+  color: var(--color-text-primary); /* Letras blancas */
+}
+
+.editor-container {
+  flex: 1;
+  border: 1px solid var(--color-border); /* Borde oscuro */
+  margin: 0 20px 20px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.code-textarea {
+  width: 100%;
+  height: 400px;
+  border: none;
+  padding: 15px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  
+  /* --- Tema Oscuro para el editor --- */
+  background: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  caret-color: var(--color-primary); /* Cursor morado */
+}
+
+.code-textarea:focus {
+  outline: none;
+  background: var(--color-bg-dark);
+}
+
+/* --- Panel de Errores Oscuro --- */
+.errors-panel {
+  margin: 0 20px 20px;
+  padding: 15px;
+  background: rgba(207, 102, 121, 0.1); /* Fondo rojo oscuro */
+  border: 1px solid var(--color-error);
+  border-radius: 5px;
+}
+
+.errors-panel h4 {
+  margin-bottom: 10px;
+  color: var(--color-error);
+}
+
+.error-item {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(207, 102, 121, 0.3);
+}
+
+.error-line {
+  font-weight: bold;
+  color: var(--color-error);
+  min-width: 80px;
+}
+
+.error-message {
+  color: var(--color-error);
+}
+
+
+/* --- ESTILOS FLOTANTES AÑADIDOS --- */
+
+.code-editor.floating {
+  position: fixed;
+  /* --- CAMBIO --- */
+  /* Lo movemos abajo para dejar espacio a los controles */
+  bottom: 20px; 
+  left: 20px;
+  width: 450px; /* Ancho más pequeño */
+  height: 400px; /* Altura más pequeña */
+  z-index: 1000;
+  
+  flex: 0 0 auto; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Ajustar título en modo flotante */
+.code-editor.floating h3 {
+  padding: 10px 15px 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+/* Ajustar márgenes del contenedor del textarea */
+.code-editor.floating .editor-container {
+  margin: 0 15px 10px;
+  /* Mantiene su 'flex: 1' para ocupar el espacio restante */
+}
+
+/* CLAVE: Ajustar el textarea para que quepa en el nuevo tamaño */
+.code-editor.floating .code-textarea {
+  height: 100%; /* Rellena el .editor-container */
+  resize: none; /* Desactivar resize en modo flotante */
+}
+
+/* Ajustar panel de errores en modo flotante */
+.code-editor.floating .errors-panel {
+  margin: 0 15px 15px;
+  flex-shrink: 1; /* Permitir que se encoja */
+  max-height: 100px; /* Límite para el panel de error */
+  flex-grow: 0;
+}
+
+/* Dentro de CodeEditor.css */
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 0; /* Coincide con tu padding original de h3 */
+    margin-bottom: 10px;
+}
+
+.code-editor h3 {
+    padding: 0; /* Resetear padding porque ahora lo maneja el padre flex */
+    margin: 0;
+}
+
+/* Scrollbar para la lista de errores */
+.errors-list::-webkit-scrollbar {
+  width: 8px;
+}
+.errors-list::-webkit-scrollbar-track {
+  background: #251010;
+}
+.errors-list::-webkit-scrollbar-thumb {
+  background: #d32f2f;
+  border-radius: 4px;
+}
+
+.error-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 4px solid #fff;
+}
+
+/* Colores por tipo */
+.error-lexical { border-left-color: #ff0055; background: rgba(255, 0, 85, 0.05); }
+.error-syntactic { border-left-color: #ff9900; background: rgba(255, 153, 0, 0.05); }
+.error-semantic { border-left-color: #ffd700; background: rgba(255, 215, 0, 0.05); }
+.error-general { border-left-color: #999; }
+
+.error-badges {
+  display: flex;
+  gap: 10px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.badge-type { opacity: 0.9; }
+.badge-line { color: #fff; background: rgba(255,255,255,0.1); padding: 0 4px; border-radius: 3px; }
+
+.error-message {
+  color: #eee;
+  font-size: 0.9rem;
+  font-family: monospace;
+}

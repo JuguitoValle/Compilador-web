@@ -1,0 +1,99 @@
+.object-code-viewer {
+  /* Quitar estilos de panel, ya que está dentro de .tab-content */
+  padding: 0;
+  border: none;
+  background: none;
+  margin-top: 0;
+}
+
+.object-code-viewer .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.object-code-viewer h3 {
+  margin: 0;
+  color: var(--color-primary); /* Tema */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.copy-button {
+  background: var(--color-primary-variant); /* Tema */
+  color: var(--color-text-primary); /* Tema */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.copy-button:hover {
+  background: var(--color-primary); /* Tema */
+  color: var(--color-bg-dark); /* Tema */
+}
+
+.copy-button.copied {
+  background: var(--color-success); /* Tema */
+}
+
+.code-container {
+  border: 1px solid var(--color-border); /* Tema */
+  border-radius: 6px;
+  background: var(--color-bg-dark); /* Tema */
+  overflow: auto;
+  max-height: 400px;
+  margin-bottom: 15px;
+}
+
+.python-code {
+  margin: 0;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--color-text-primary); /* Tema */
+  white-space: pre-wrap;
+}
+
+.execution-info {
+  background: var(--color-bg-light); /* Tema */
+  padding: 15px;
+  border-radius: 6px;
+  border-left: 4px solid var(--color-primary); /* Tema */
+}
+
+.execution-info h4 {
+  margin: 0 0 10px 0;
+  color: var(--color-text-primary); /* Tema */
+}
+
+.execution-info ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.execution-info li {
+  margin-bottom: 5px;
+  color: var(--color-text-secondary); /* Tema */
+}
+
+.execution-info code {
+  background: var(--color-bg-dark); /* Tema */
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--color-primary); /* Tema */
+}
+
+.placeholder {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-text-secondary); /* Tema */
+  font-style: italic;
+}

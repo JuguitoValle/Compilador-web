@@ -1,0 +1,157 @@
+.symbol-table-visualizer {
+    /* Quitamos estilos de panel, ya está en .tab-content */
+    height: 100%;
+}
+
+.symbol-table-visualizer h3 {
+    margin-top: 0;
+    color: var(--color-primary); /* Tema */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.summary {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+}
+
+.summary-item {
+    background: var(--color-bg-light); /* Tema */
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--color-border); /* Tema */
+}
+
+.symbol-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid var(--color-border); /* Tema */
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.symbol-table-level {
+    margin-bottom: 10px;
+}
+
+.scope-header {
+    background: var(--color-bg-light); /* Tema */
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--color-border); /* Tema */
+    transition: background-color 0.2s;
+}
+
+.scope-header:hover {
+    background: var(--color-bg-medium); /* Tema */
+}
+
+.toggle-icon {
+    font-weight: bold;
+    width: 15px;
+    text-align: center;
+}
+
+.scope-badge {
+    background: var(--color-primary-variant); /* Tema */
+    color: var(--color-text-primary); /* Tema */
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+}
+
+.symbol-count {
+    margin-left: auto;
+    background: var(--color-text-secondary); /* Tema */
+    color: var(--color-bg-dark); /* Tema */
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+}
+
+.scope-content {
+    margin-top: 5px;
+}
+
+.symbol-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.symbol-table th,
+.symbol-table td {
+    border: 1px solid var(--color-border); /* Tema */
+    padding: 8px;
+    text-align: left;
+}
+
+.symbol-table th {
+    background-color: var(--color-bg-light); /* Tema */
+    color: var(--color-text-secondary); /* Tema */
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+}
+
+.symbol-name {
+    font-weight: bold;
+}
+
+/* --- TEMA OSCURO PARA TIPOS DE DATOS --- */
+.data-type {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.data-type.int { background: rgba(76, 175, 80, 0.15); color: #4CAF50; }
+.data-type.float { background: rgba(3, 218, 198, 0.15); color: #03DAC6; }
+.data-type.bool { background: rgba(233, 30, 99, 0.15); color: #E91E63; }
+.data-type.string { background: rgba(255, 152, 0, 0.15); color: #FF9800; }
+.data-type.void { background: var(--color-bg-light); color: var(--color-text-secondary); }
+
+/* --- TEMA OSCURO PARA ESTADO --- */
+.status.initialized { color: var(--color-success); }
+.status.not-initialized { color: var(--color-error); }
+.status.used { color: var(--color-success); }
+.status.not-used { color: #FF9800; /* Naranja */ }
+
+tr.unused {
+    background-color: rgba(255, 152, 0, 0.1); /* Fondo naranja tenue */
+}
+
+tr.uninitialized {
+    background-color: rgba(207, 102, 121, 0.1); /* Fondo rojo tenue */
+}
+
+.empty-scope {
+    padding: 10px;
+    color: var(--color-text-secondary); /* Tema */
+    font-style: italic;
+    background: var(--color-bg-dark); /* Tema */
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.placeholder {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-text-secondary); /* Tema */
+    font-style: italic;
+}
