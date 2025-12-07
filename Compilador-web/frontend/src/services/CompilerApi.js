@@ -1,4 +1,3 @@
-// CORREGIDO: Mejor manejo de errores y logging
 const API_BASE_URL = 'http://localhost:5000';
 
 export const compileCode = async (code) => {

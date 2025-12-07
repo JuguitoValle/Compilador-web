@@ -13,16 +13,35 @@ import './styles/App.css';
 
 const DEFAULT_CODE = `// Escribe tu código aquí
 function main() {
-    int x = 10;
-    int y = 5;
-    int result = x + y * 2;
+    int contador = 0;
+    int limite = 5;
+    float pi = 3.1416;
+    bool activo = true;
 
-    if (result > 15) {
-        print("Resultado mayor a 15");
+    print("Inicio del programa");
+
+    if (activo) {
+        string mensaje_if = "Entrando al ciclo";
+        int incremento = 1;
+        
+        print(mensaje_if);
+      
+        contador = contador + incremento;
     } else {
-        print("Resultado menor o igual a 15");
+        string error = "Sistema inactivo";
+        int codigo_error = 404;
+        
+        print(error);
+        print(codigo_error);
+    }
+    while (contador < limite) {
+        float calculo = contador * pi;
+        print(calculo);
+        
+        contador = contador + 1;
     }
 
+    print("Fin del programa");
     return 0;
 }`;
 
@@ -39,24 +58,11 @@ function App() {
     setError(null);
     try {
       const result = await compileCode(code);
-      
-      // --- LÓGICA AGREGADA: Calcular métricas de optimización si no vienen del backend ---
-      if (result && result.intermediate_code && result.optimized_code && result.metrics) {
-         const originalLen = result.intermediate_code.length;
-         const optLen = result.optimized_code.length;
-         // Calcular reducción porcentual
-         const reduction = originalLen > 0 
-             ? ((originalLen - optLen) / originalLen) * 100 
-             : 0;
-         
-         // Inyectar en metrics para que el Dashboard lo lea
-         result.metrics.optimization_reduction = reduction;
-      }
-      // ---------------------------------------------------------------------------------
-
       setCompilationResult(result);
+      
+      // Cambiar automáticamente a una pestaña relevante si no es flotante
       if (!isFloating) {
-          setActiveTab('optimization'); 
+          setActiveTab('metrics'); // Vamos a métricas para ver los resultados
       }
     } catch (err) {
       setError(err.message || 'Error al compilar el código');

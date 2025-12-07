@@ -1,157 +1,168 @@
 .symbol-table-visualizer {
-    /* Quitamos estilos de panel, ya está en .tab-content */
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg-dark);
 }
 
 .symbol-table-visualizer h3 {
-    margin-top: 0;
-    color: var(--color-primary); /* Tema */
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--color-primary);
+    margin: 0;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
 }
 
-.summary {
-    display: flex;
-    gap: 15px;
-    font-size: 12px;
-}
-
-.summary-item {
-    background: var(--color-bg-light); /* Tema */
+.controls button {
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
     padding: 4px 8px;
     border-radius: 4px;
-    border: 1px solid var(--color-border); /* Tema */
+    cursor: pointer;
+    font-size: 11px;
+    margin-left: 5px;
+}
+.controls button:hover {
+    background: var(--color-primary);
+    color: white;
 }
 
 .symbol-table-container {
-    max-height: 500px;
+    flex: 1;
     overflow-y: auto;
-    border: 1px solid var(--color-border); /* Tema */
-    border-radius: 4px;
-    padding: 10px;
+    padding-right: 5px;
 }
 
+/* --- Scopes --- */
 .symbol-table-level {
-    margin-bottom: 10px;
+    border-left: 2px solid var(--color-border); /* Línea guía vertical */
+    margin-bottom: 5px;
 }
 
 .scope-header {
-    background: var(--color-bg-light); /* Tema */
-    padding: 10px;
+    background: var(--color-bg-light);
+    padding: 8px 10px;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
-    border: 1px solid var(--color-border); /* Tema */
-    transition: background-color 0.2s;
+    border: 1px solid var(--color-border);
+    user-select: none;
 }
 
 .scope-header:hover {
-    background: var(--color-bg-medium); /* Tema */
+    background: var(--color-bg-medium);
+    border-color: var(--color-primary);
 }
 
 .toggle-icon {
-    font-weight: bold;
-    width: 15px;
+    width: 20px;
     text-align: center;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.scope-info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex: 1;
 }
 
 .scope-badge {
-    background: var(--color-primary-variant); /* Tema */
-    color: var(--color-text-primary); /* Tema */
+    background: var(--color-primary-variant);
+    font-size: 10px;
     padding: 2px 6px;
     border-radius: 10px;
-    font-size: 10px;
+    color: white;
 }
 
 .symbol-count {
-    margin-left: auto;
-    background: var(--color-text-secondary); /* Tema */
-    color: var(--color-bg-dark); /* Tema */
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 10px;
+    font-size: 11px;
+    color: var(--color-text-secondary);
 }
 
 .scope-content {
-    margin-top: 5px;
+    padding: 10px 0 10px 10px; /* Indentación del contenido */
 }
 
+/* --- Tabla Interna --- */
 .symbol-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
-    margin-bottom: 10px;
-}
-
-.symbol-table th,
-.symbol-table td {
-    border: 1px solid var(--color-border); /* Tema */
-    padding: 8px;
-    text-align: left;
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .symbol-table th {
-    background-color: var(--color-bg-light); /* Tema */
-    color: var(--color-text-secondary); /* Tema */
-    font-weight: bold;
-    position: sticky;
-    top: 0;
+    background: rgba(255,255,255,0.05);
+    color: var(--color-text-secondary);
+    text-align: left;
+    padding: 6px 8px;
+    font-size: 11px;
+    text-transform: uppercase;
 }
 
-.symbol-name {
-    font-weight: bold;
+.symbol-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-primary);
 }
 
-/* --- TEMA OSCURO PARA TIPOS DE DATOS --- */
-.data-type {
+/* --- Estados visuales --- */
+.status-container {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.status-icon {
+    font-size: 10px;
     padding: 2px 6px;
     border-radius: 4px;
-    font-size: 10px;
-    font-weight: bold;
+    border: 1px solid;
 }
 
-.data-type.int { background: rgba(76, 175, 80, 0.15); color: #4CAF50; }
-.data-type.float { background: rgba(3, 218, 198, 0.15); color: #03DAC6; }
-.data-type.bool { background: rgba(233, 30, 99, 0.15); color: #E91E63; }
-.data-type.string { background: rgba(255, 152, 0, 0.15); color: #FF9800; }
-.data-type.void { background: var(--color-bg-light); color: var(--color-text-secondary); }
-
-/* --- TEMA OSCURO PARA ESTADO --- */
-.status.initialized { color: var(--color-success); }
-.status.not-initialized { color: var(--color-error); }
-.status.used { color: var(--color-success); }
-.status.not-used { color: #FF9800; /* Naranja */ }
-
-tr.unused {
-    background-color: rgba(255, 152, 0, 0.1); /* Fondo naranja tenue */
+.status-icon.ok {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+    border-color: rgba(76, 175, 80, 0.3);
 }
 
-tr.uninitialized {
-    background-color: rgba(207, 102, 121, 0.1); /* Fondo rojo tenue */
+.status-icon.err {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.status-icon.warn {
+    background: rgba(255, 152, 0, 0.1);
+    color: #ff9800;
+    border-color: rgba(255, 152, 0, 0.3);
 }
 
 .empty-scope {
-    padding: 10px;
-    color: var(--color-text-secondary); /* Tema */
     font-style: italic;
-    background: var(--color-bg-dark); /* Tema */
-    border-radius: 4px;
-    margin: 5px 0;
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    padding: 5px;
 }
 
-.placeholder {
-    text-align: center;
-    padding: 40px;
-    color: var(--color-text-secondary); /* Tema */
-    font-style: italic;
+.nested-scopes-container {
+    margin-top: 10px;
+}
+
+.mono-font {
+    font-family: monospace;
+    opacity: 0.7;
 }

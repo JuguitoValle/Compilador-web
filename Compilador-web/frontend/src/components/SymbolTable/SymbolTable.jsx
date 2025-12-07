@@ -1,55 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './SymbolTable.css';
 
 const SymbolTable = ({ symbolTable }) => {
+    // Usamos un Set para guardar los IDs o nombres de scopes expandidos
     const [expandedScopes, setExpandedScopes] = useState(new Set(['global']));
 
-    const toggleScope = (scopeName) => {
+    // Efecto para expandir 'global' y sus hijos directos al cargar una nueva tabla
+    useEffect(() => {
+        if (symbolTable) {
+            // Expandir el scope global
+            const newExpanded = new Set([symbolTable.scope_name]);
+            // Expandir también los hijos directos (nivel 1)
+            if (symbolTable.children) {
+                symbolTable.children.forEach(child => {
+                    newExpanded.add(child.scope_name);
+                });
+            }
+            setExpandedScopes(newExpanded);
+        }
+    }, [symbolTable]);
+
+    const toggleScope = (scopeId) => {
         const newExpanded = new Set(expandedScopes);
-        if (newExpanded.has(scopeName)) {
-            newExpanded.delete(scopeName);
+        if (newExpanded.has(scopeId)) {
+            newExpanded.delete(scopeId);
         } else {
-            newExpanded.add(scopeName);
+            newExpanded.add(scopeId);
         }
         setExpandedScopes(newExpanded);
     };
 
-    const renderSymbolTable = (table, level = 0) => {
+    const expandAll = () => {
+        const allScopes = new Set();
+        const traverse = (table) => {
+            // Usamos una clave única combinando nombre y nivel si es necesario
+            // pero scope_name suele ser suficiente si es único
+            allScopes.add(table.scope_name);
+            if (table.children) {
+                table.children.forEach(traverse);
+            }
+        };
+        if (symbolTable) traverse(symbolTable);
+        setExpandedScopes(allScopes);
+    };
+
+    const collapseAll = () => {
+        setExpandedScopes(new Set(['global']));
+    };
+
+    // Función recursiva de renderizado
+    const renderSymbolTable = (table, level = 0, index = 0) => {
+        // Generamos una key única para evitar errores de React
+        const uniqueKey = `${table.scope_name}-${level}-${index}`;
         const isExpanded = expandedScopes.has(table.scope_name);
         
+        const symbolsList = Object.values(table.symbols || {});
+        const hasChildren = table.children && table.children.length > 0;
+        const hasSymbols = symbolsList.length > 0;
+
         return (
-            <div key={table.scope_name} className="symbol-table-level">
+            <div key={uniqueKey} className="symbol-table-level" style={{ marginLeft: level > 0 ? '20px' : '0' }}>
                 <div 
-                    className="scope-header"
-                    onClick={() => toggleScope(table.scope_name)}
-                    style={{ paddingLeft: level * 20 + 10 }}
+                    className={`scope-header ${isExpanded ? 'expanded' : ''}`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleScope(table.scope_name);
+                    }}
                 >
                     <span className="toggle-icon">
                         {isExpanded ? '▼' : '►'}
                     </span>
-                    <strong>Scope: {table.scope_name}</strong>
-                    <span className="scope-badge">Nivel {table.level}</span>
-                    <span className="symbol-count">{Object.keys(table.symbols).length} símbolos</span>
+                    <div className="scope-info">
+                        <strong>{table.scope_name}</strong>
+                        <span className="scope-badge">Nivel {level}</span>
+                    </div>
+                    <span className="symbol-count">
+                        {symbolsList.length} var/func
+                        {hasChildren && ` | ${table.children.length} sub-scopes`}
+                    </span>
                 </div>
 
                 {isExpanded && (
                     <div className="scope-content">
-                        {Object.keys(table.symbols).length > 0 ? (
+                        {hasSymbols ? (
                             <table className="symbol-table">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Tipo</th>
-                                        <th>Scope</th>
+                                        <th>Dir. Mem</th>
                                         <th>Línea</th>
-                                        <th>Memoria</th>
-                                        <th>Inicializada</th>
-                                        <th>Usada</th>
+                                        <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Object.values(table.symbols).map((symbol, index) => (
-                                        <tr key={index} className={`
+                                    {symbolsList.map((symbol, idx) => (
+                                        <tr key={idx} className={`
                                             ${!symbol.used ? 'unused' : ''}
                                             ${symbol.used && !symbol.initialized ? 'uninitialized' : ''}
                                         `}>
@@ -62,32 +108,35 @@ const SymbolTable = ({ symbolTable }) => {
                                                     {symbol.data_type}
                                                 </span>
                                             </td>
-                                            <td>{symbol.scope}</td>
-                                            <td>{symbol.line}</td>
-                                            <td>#{symbol.memory_address}</td>
+                                            <td className="mono-font">#{symbol.memory_address}</td>
+                                            <td className="text-center">{symbol.line}</td>
                                             <td>
-                                                <span className={`status ${symbol.initialized ? 'initialized' : 'not-initialized'}`}>
-                                                    {symbol.initialized ? '✅' : '❌'}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span className={`status ${symbol.used ? 'used' : 'not-used'}`}>
-                                                    {symbol.used ? '✅' : '❌'}
-                                                </span>
+                                                <div className="status-container">
+                                                    <span title="Inicializada" className={`status-icon ${symbol.initialized ? 'ok' : 'err'}`}>
+                                                        {symbol.initialized ? 'Inic. ✅' : 'Inic. ❌'}
+                                                    </span>
+                                                    <span title="Usada" className={`status-icon ${symbol.used ? 'ok' : 'warn'}`}>
+                                                        {symbol.used ? 'Usada ✅' : 'No Usada ⚠️'}
+                                                    </span>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         ) : (
-                            <div className="empty-scope" style={{ paddingLeft: level * 20 + 30 }}>
-                                No hay símbolos en este scope
+                            <div className="empty-scope">
+                                <span>(Sin variables declaradas en este nivel)</span>
                             </div>
                         )}
 
-                        {/* Renderizar tablas hijas */}
-                        {table.children && table.children.map(childTable => 
-                            renderSymbolTable(childTable, level + 1)
+                        {/* RECURSIVIDAD: Renderizar hijos */}
+                        {hasChildren && (
+                            <div className="nested-scopes-container">
+                                {table.children.map((childTable, childIndex) => 
+                                    renderSymbolTable(childTable, level + 1, childIndex)
+                                )}
+                            </div>
                         )}
                     </div>
                 )}
@@ -100,7 +149,7 @@ const SymbolTable = ({ symbolTable }) => {
             <div className="symbol-table-visualizer">
                 <h3>📊 Tabla de Símbolos</h3>
                 <div className="placeholder">
-                    <p>Compila un programa para visualizar la Tabla de Símbolos</p>
+                    <p>Compila un programa para ver los Scopes.</p>
                 </div>
             </div>
         );
@@ -110,20 +159,15 @@ const SymbolTable = ({ symbolTable }) => {
         <div className="symbol-table-visualizer">
             <div className="header">
                 <h3>📊 Tabla de Símbolos</h3>
-                <div className="summary">
-                    <span className="summary-item">
-                        Scopes: {countScopes(symbolTable)}
-                    </span>
-                    <span className="summary-item">
-                        Símbolos: {countSymbols(symbolTable)}
-                    </span>
-                    <span className="summary-item">
-                        Variables: {countVariables(symbolTable)}
-                    </span>
-                    <span className="summary-item">
-                        Funciones: {countFunctions(symbolTable)}
-                    </span>
+                <div className="controls">
+                    <button onClick={expandAll} className="btn-sm">Expandir Todo</button>
+                    <button onClick={collapseAll} className="btn-sm">Colapsar Todo</button>
                 </div>
+            </div>
+
+            <div className="summary-bar">
+                <span className="summary-pill">Scopes Totales: {countScopes(symbolTable)}</span>
+                <span className="summary-pill">Variables: {countVariables(symbolTable)}</span>
             </div>
             
             <div className="symbol-table-container">
@@ -133,36 +177,20 @@ const SymbolTable = ({ symbolTable }) => {
     );
 };
 
-// Funciones auxiliares para estadísticas
+// --- Helpers para conteo recursivo ---
 const countScopes = (table) => {
-    let count = 1; // La tabla actual
-    table.children?.forEach(child => {
-        count += countScopes(child);
-    });
-    return count;
-};
-
-const countSymbols = (table) => {
-    let count = Object.keys(table.symbols).length;
-    table.children?.forEach(child => {
-        count += countSymbols(child);
-    });
+    let count = 1; 
+    if(table.children) {
+        table.children.forEach(child => count += countScopes(child));
+    }
     return count;
 };
 
 const countVariables = (table) => {
-    let count = Object.values(table.symbols).filter(s => s.symbol_type === 'variable').length;
-    table.children?.forEach(child => {
-        count += countVariables(child);
-    });
-    return count;
-};
-
-const countFunctions = (table) => {
-    let count = Object.values(table.symbols).filter(s => s.symbol_type === 'function').length;
-    table.children?.forEach(child => {
-        count += countFunctions(child);
-    });
+    let count = Object.values(table.symbols || {}).filter(s => s.symbol_type === 'variable').length;
+    if(table.children) {
+        table.children.forEach(child => count += countVariables(child));
+    }
     return count;
 };
 
